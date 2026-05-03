@@ -104,3 +104,6 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+Cuties_Away/Library
+Cuties_Away/Temp
+Cuties_Away/UserSettings
