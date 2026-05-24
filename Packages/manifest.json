@@ -1,11 +1,20 @@
 {
   "dependencies": {
+    "com.cysharp.messagepipe": "1.8.1",
+    "com.cysharp.messagepipe.vcontainer": "1.8.1",
+    "com.cysharp.unitask": "2.5.11",
+    "com.unity.addressables": "1.22.3",
+    "com.unity.cinemachine": "2.10.7",
     "com.unity.collab-proxy": "2.12.4",
+    "com.unity.device-simulator.devices": "1.0.1",
+    "com.unity.feature.2d": "2.0.1",
     "com.unity.feature.development": "1.0.1",
+    "com.unity.inputsystem": "1.14.2",
     "com.unity.textmeshpro": "3.0.7",
     "com.unity.timeline": "1.7.7",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.9.4",
+    "jp.hadashikick.vcontainer": "1.18.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -37,5 +46,17 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.cysharp.messagepipe",
+        "com.cysharp.messagepipe.vcontainer",
+        "com.cysharp.unitask",
+        "jp.hadashikick.vcontainer"
+      ]
+    }
+  ]
 }
