@@ -26,17 +26,29 @@ namespace _002_Scripts.Controller
         [SerializeField] private float _jumpTime = 0f;
         [SerializeField] private float _minJumpDur = 0.2f;
 
+        [SerializeField] private Animator _animator;
+
         private void FixedUpdate()
         {
             if (!isJumped) return;
-
+        
             _jumpTime += Time.fixedDeltaTime;
             if (_jumpTime > _minJumpDur && _rb.velocity.magnitude < 0.1f)
             {
                 isJumped = false;
+                _animator.SetBool("isJump", false);
                 _jumpTime = 0f;
             }
         }
+
+        // private void OnCollisionEnter2D(Collision2D other)
+        // {
+        //     if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        //     {
+        //         isJumped = false;
+        //         _animator.SetBool("isJump", false);
+        //     }
+        // }
 
         public void OnTouch(InputAction.CallbackContext ctx)
         {
@@ -57,6 +69,7 @@ namespace _002_Scripts.Controller
                 ReleaseTouch();
                 isJumped = true;
                 isDrag = false;
+                _animator.SetBool("isJump", true);
             }
         }
 
