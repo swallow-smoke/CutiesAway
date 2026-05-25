@@ -1,7 +1,10 @@
 ﻿using System;
+using _002_Scripts.Data.Message;
+using MessagePipe;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using VContainer;
 
 namespace _002_Scripts.Controller
 {
@@ -28,10 +31,13 @@ namespace _002_Scripts.Controller
 
         [SerializeField] private Animator _animator;
 
+        private IPublisher<PlayerFlagMsg> _playerFlagPublisher;
+        private IDisposable bag;
+
         private void FixedUpdate()
         {
             if (!isJumped) return;
-        
+
             _jumpTime += Time.fixedDeltaTime;
             if (_jumpTime > _minJumpDur && _rb.velocity.magnitude < 0.1f)
             {
@@ -56,7 +62,7 @@ namespace _002_Scripts.Controller
             {
                 if (isJumped) return;
                 Vector2 screenPos = touchPosRef.action.ReadValue<Vector2>();
-                
+
                 _startPos = Camera.main.ScreenToWorldPoint(
                     new Vector3(screenPos.x, screenPos.y, -Camera.main.transform.position.z));
                 _lineRenderer.enabled = true;
@@ -110,13 +116,13 @@ namespace _002_Scripts.Controller
         {
             _lineRenderer.positionCount = trajectionPoints;
             Vector2 velocity = finalPos / _rb.mass;
-            Vector2 pos = transform.position; 
+            Vector2 pos = transform.position;
 
             for (int i = 0; i < trajectionPoints; i++)
             {
                 Vector2 nextPos = pos
-                      + velocity * times
-                      + 0.5f * Physics2D.gravity * times * times;
+                                  + velocity * times
+                                  + 0.5f * Physics2D.gravity * times * times;
 
                 RaycastHit2D hit = Physics2D.Raycast(pos, velocity.normalized, (nextPos - pos).magnitude,
                     checkLayer);
@@ -129,6 +135,7 @@ namespace _002_Scripts.Controller
                     {
                         bounce = hit.collider.sharedMaterial.bounciness;
                     }
+
                     _lineRenderer.SetPosition(i, hit.point);
                     velocity = Vector2.Reflect(velocity, hit.normal) * bounce;
                     pos = hit.point + hit.normal * 0.1f;
@@ -141,6 +148,21 @@ namespace _002_Scripts.Controller
 
                 velocity += Physics2D.gravity * times;
             }
+        }
+
+        [Inject]
+        public void Construct(IPublisher<PlayerFlagMsg> playerFlagPublisher)
+        {
+            var builder = DisposableBag.CreateBuilder();
+            _playerFlagPublisher = playerFlagPublisher;
+
+
+            bag = builder.Build();
+        }
+
+        private void OnDestroy()
+        {
+            bag.Dispose();
         }
     }
 }
